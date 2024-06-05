@@ -4,7 +4,8 @@ CC              = cc
 SRC             = philo.c routine.c utils.c monitor.c
 OBJDIR          = obj
 OBJS            = $(SRC:%.c=$(OBJDIR)/%.o)
-CFLAGS          = -g -Wall -Werror -Wextra
+CFLAGS          = -g -Wall -Werror -Wextra -fsanitize=thread
+LDFLAGS			= -fsanitize=thread
 
 # Generic rule for .o files
 $(OBJDIR)/%.o: %.c
@@ -14,7 +15,7 @@ $(OBJDIR)/%.o: %.c
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
 
 clean:
 	rm -f $(OBJS)

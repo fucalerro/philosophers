@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:42:26 by lferro            #+#    #+#             */
-/*   Updated: 2024/06/04 15:51:02 by lferro           ###   ########.fr       */
+/*   Updated: 2024/06/05 12:38:43 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,10 @@ int	ft_atoi(const char *nptr)
 	size_t	i;
 	size_t	j;
 	size_t	k;
-	size_t	al_signed;
 
 	i = 1;
 	j = 0;
 	k = 0;
-	al_signed = 0;
 	while (ft_isspace(nptr[j]) == 1)
 		j++;
 	if (nptr[j] == '+')

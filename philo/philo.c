@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:05:58 by lferro            #+#    #+#             */
-/*   Updated: 2024/06/04 15:56:12 by lferro           ###   ########.fr       */
+/*   Updated: 2024/06/05 12:38:12 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ void	init_params(int argc, char const **argv, t_params *params)
 	check_digit_params(argc, argv);
 	params->someone_died = false;
 	params->nbr_philo = ft_atoi(argv[1]);
+	if (params->nbr_philo < 1)
+	{
+		exit(1);
+	}
 	params->time_to_die = ft_atoi(argv[2]);
 	params->time_to_eat = ft_atoi(argv[3]);
 	params->time_to_sleep = ft_atoi(argv[4]);
