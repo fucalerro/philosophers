@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:05:58 by lferro            #+#    #+#             */
-/*   Updated: 2024/06/05 12:38:12 by lferro           ###   ########.fr       */
+/*   Updated: 2024/06/11 15:00:21 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	init_mutexes(t_params *params)
 	while (i < params->nbr_philo)
 	{
 		pthread_mutex_init(&params->forks[i], NULL);
+		pthread_mutex_init(&params->philos[i].mealtime, NULL);
 		i++;
 	}
 	pthread_mutex_init(&params->output, NULL);
@@ -85,7 +86,10 @@ void	dinner(t_params *params, pthread_t *monitor)
 	pthread_create(monitor, NULL, &monitor_routine, params);
 	i = 0;
 	while (i < params->nbr_philo)
-		pthread_join(params->philos[i++].thread, NULL);
+	{
+		pthread_join(params->philos[i].thread, NULL);
+		i++;
+	}
 	pthread_join(*monitor, NULL);
 }
 
@@ -102,8 +106,11 @@ int	main(int argc, char const **argv)
 	dinner(&params, &monitor);
 	i = 0;
 	while (i < params.nbr_philo)
-		pthread_mutex_destroy(&params.forks[i++]);
-	pthread_mutex_destroy(&params.output);
+	{
+		pthread_mutex_destroy(&params.forks[i]);
+		pthread_mutex_destroy(&params.philos[i].mealtime);
+		i++;
+	}
 	pthread_mutex_destroy(&params.death);
 	pthread_mutex_destroy(&params.filled);
 	pthread_mutex_destroy(&params.fini);
