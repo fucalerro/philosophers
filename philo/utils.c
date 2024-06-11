@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:42:26 by lferro            #+#    #+#             */
-/*   Updated: 2024/06/05 12:38:43 by lferro           ###   ########.fr       */
+/*   Updated: 2024/06/11 16:30:33 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,15 @@ void	snooze(int microseconds)
 	}
 }
 
-void	print_action(t_philo *philo, char *action, long long start_time)
+void	print_action(t_philo *philo, char *action, long long start_time,
+		int dead)
 {
 	int	i;
 
+	if (dead)
+		printf("%lld %d died\n", (long long)get_time() - start_time, philo->id);
+	if (dead)
+		exit(0);
 	i = 0;
 	while (i < philo->params->nbr_philo)
 	{
@@ -80,12 +85,15 @@ void	print_action(t_philo *philo, char *action, long long start_time)
 		i++;
 	}
 	pthread_mutex_lock(&philo->params->output);
+	pthread_mutex_lock(&philo->params->death);
 	if (philo->params->someone_died)
 	{
+		pthread_mutex_unlock(&philo->params->death);
 		pthread_mutex_unlock(&philo->params->output);
 		return ;
 	}
 	printf("%lld %d %s\n", (long long)get_time() - start_time, philo->id,
 		action);
+	pthread_mutex_unlock(&philo->params->death);
 	pthread_mutex_unlock(&philo->params->output);
 }
