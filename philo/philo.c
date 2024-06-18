@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:05:58 by lferro            #+#    #+#             */
-/*   Updated: 2024/06/11 15:00:21 by lferro           ###   ########.fr       */
+/*   Updated: 2024/06/18 15:23:52 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	init_params(int argc, char const **argv, t_params *params)
 		exit(1);
 	}
 	check_digit_params(argc, argv);
-	params->someone_died = false;
+	params->someone_died = 0;
 	params->nbr_philo = ft_atoi(argv[1]);
 	if (params->nbr_philo < 1)
 	{
@@ -77,6 +77,7 @@ void	dinner(t_params *params, pthread_t *monitor)
 	int	i;
 
 	i = 0;
+	params->monitor = *monitor;
 	while (i < params->nbr_philo)
 	{
 		pthread_create(&params->philos[i].thread, NULL, &philo_routine,
@@ -111,6 +112,7 @@ int	main(int argc, char const **argv)
 		pthread_mutex_destroy(&params.philos[i].mealtime);
 		i++;
 	}
+	pthread_mutex_destroy(&params.output);
 	pthread_mutex_destroy(&params.death);
 	pthread_mutex_destroy(&params.filled);
 	pthread_mutex_destroy(&params.fini);

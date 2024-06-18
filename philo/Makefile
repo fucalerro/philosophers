@@ -1,7 +1,7 @@
 OS              := $(shell uname)
 NAME            = philo
 CC              = cc
-SRC             = philo.c routine.c utils.c monitor.c
+SRC             = philo.c routine.c utils.c monitor.c utils2.c
 OBJDIR          = obj
 OBJS            = $(SRC:%.c=$(OBJDIR)/%.o)
 CFLAGS          = -g -Wall -Werror -Wextra #-fsanitize=thread

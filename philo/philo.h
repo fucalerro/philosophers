@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:29:05 by lferro            #+#    #+#             */
-/*   Updated: 2024/06/11 16:31:35 by lferro           ###   ########.fr       */
+/*   Updated: 2024/06/18 15:03:02 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-# define DEAD 		1
-# define ALIVE 		0
+# define DEAD 1
+# define ALIVE 0
 
 typedef struct s_philo
 {
@@ -52,6 +52,8 @@ typedef struct s_params
 
 	int				finished;
 
+	pthread_t		monitor;
+
 	pthread_mutex_t	forks[200];
 	pthread_mutex_t	death;
 	pthread_mutex_t	output;
@@ -59,9 +61,10 @@ typedef struct s_params
 	pthread_mutex_t	fini;
 }					t_params;
 
+int					check_death(t_params *param);
 void				check_digit_params(int argc, char const **argv);
 void				snooze(int microseconds);
-void				print_action(t_philo *philo, char *action,
+int					print_action(t_philo *philo, char *action,
 						long long start_time, int dead);
 long				get_time(void);
 void				*monitor_routine(void *params);

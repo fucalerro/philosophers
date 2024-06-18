@@ -6,13 +6,13 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:35:43 by lferro            #+#    #+#             */
-/*   Updated: 2024/06/11 16:22:42 by lferro           ###   ########.fr       */
+/*   Updated: 2024/06/18 15:11:45 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	monitor_filled(t_params *param)
+int	monitor_filled(t_params *param)
 {
 	int	i;
 
@@ -26,37 +26,52 @@ void	monitor_filled(t_params *param)
 			pthread_mutex_lock(&param->fini);
 			param->finished = 1;
 			pthread_mutex_unlock(&param->fini);
-			exit(0);
-			return ;
+			return (1);
 		}
 		pthread_mutex_unlock(&param->filled);
 		i++;
 	}
+	return (0);
 }
 
-void	monitor_death(t_params *param)
+static int	print_death(t_params *param, int i)
+{
+	if (param->someone_died == 1)
+	{
+		printf("%lld %d died\n", (long long)get_time() - param->start_time,
+			param->philos[i].id);
+		pthread_mutex_unlock(&param->death);
+		return (1);
+	}
+	return (0);
+}
+
+int	monitor_death(t_params *param)
 {
 	int	i;
+	int	ret;
 
+	ret = 0;
 	i = 0;
-	pthread_mutex_lock(&param->death);
 	while (i < param->nbr_philo)
 	{
 		pthread_mutex_lock(&param->philos[i].mealtime);
 		if (get_time() - param->philos[i].last_meal > param->time_to_die)
 		{
 			pthread_mutex_unlock(&param->philos[i].mealtime);
-			print_action(&param->philos[i], "died", param->start_time, DEAD);
 			pthread_mutex_lock(&param->death);
-			param->someone_died = true;
+			param->someone_died++;
+			if (print_death(param, i) == 1)
+				ret = 1;
 			pthread_mutex_unlock(&param->death);
-			exit(0);
 		}
 		pthread_mutex_unlock(&param->philos[i].mealtime);
 		i++;
 	}
-	pthread_mutex_unlock(&param->death);
+	if (ret == 0)
+		pthread_mutex_unlock(&param->death);
 	snooze(1000);
+	return (ret);
 }
 
 void	*monitor_routine(void *params)
@@ -66,8 +81,10 @@ void	*monitor_routine(void *params)
 	param = (t_params *)params;
 	while (1)
 	{
-		monitor_filled(param);
-		monitor_death(param);
+		if (monitor_death(param))
+			break ;
+		if (monitor_filled(param))
+			break ;
 	}
 	return (0);
 }
