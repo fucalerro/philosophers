@@ -6,42 +6,31 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:05:56 by lferro            #+#    #+#             */
-/*   Updated: 2024/06/18 15:02:49 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/02 16:04:45 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	take_forks(t_philo *philo)
-{
-	t_params	*param;
-
-	param = philo->params;
-	if (philo->id % 2 == 0)
-		snooze((param->time_to_eat) / 2);
-	pthread_mutex_lock(&param->forks[philo->left_fork]);
-	if (print_action(philo, "has taken a fork", param->start_time, ALIVE))
-		return (1);
-	if (param->nbr_philo > 1)
-	{
-		pthread_mutex_lock(&param->forks[philo->right_fork]);
-		if (print_action(philo, "has taken a fork", param->start_time, ALIVE))
-			return (1);
-	}
-	return (0);
-}
 
 int	put_forks(t_philo *philo)
 {
 	t_params	*param;
 	int			ret;
 
-	ret = 0;
 	param = philo->params;
+	ret = 0;
 	pthread_mutex_lock(&param->death);
-	if (param->someone_died == true)
+	if (param->someone_died)
+	{
 		ret = 1;
+	}
 	pthread_mutex_unlock(&param->death);
+	if (ret == 1)
+	{
+		pthread_mutex_unlock(&param->forks[philo->right_fork]);
+		pthread_mutex_unlock(&param->forks[philo->left_fork]);
+		return (ret);
+	}
 	pthread_mutex_lock(&philo->mealtime);
 	philo->times_eaten++;
 	pthread_mutex_unlock(&philo->mealtime);
@@ -71,7 +60,9 @@ int	philo_loop(t_params *param, t_philo *philo)
 		return (1);
 	pthread_mutex_lock(&param->filled);
 	if (param->meals_nbr != -1 && philo->times_eaten >= param->meals_nbr)
+	{
 		param->filled_philos++;
+	}
 	pthread_mutex_unlock(&param->filled);
 	print_action(philo, "is sleeping", param->start_time, ALIVE);
 	snooze(param->time_to_sleep * 1000);

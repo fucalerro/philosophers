@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:29:05 by lferro            #+#    #+#             */
-/*   Updated: 2024/06/18 15:03:02 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/02 16:08:19 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@
 
 typedef struct s_philo
 {
+	pthread_t		thread;
 	int				id;
 	int				times_eaten;
 	int				left_fork;
 	int				right_fork;
 	long			last_meal;
 	int				dead;
-	pthread_t		thread;
 	pthread_mutex_t	mealtime;
 	struct s_params	*params;
 
@@ -70,7 +70,8 @@ long				get_time(void);
 void				*monitor_routine(void *params);
 void				*philo_routine(void *philos);
 int					ft_atoi(const char *nptr);
+int					take_forks(t_philo *philo);
 
-// #define PL printf("Line: %d File: %s\n", __LINE__, __FILE__);
+// # define PL printf("Line: %d File: %s\n", __LINE__, __FILE__);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:35:43 by lferro            #+#    #+#             */
-/*   Updated: 2024/06/18 15:11:45 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/02 16:10:01 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,7 @@ int	monitor_death(t_params *param)
 		pthread_mutex_unlock(&param->philos[i].mealtime);
 		i++;
 	}
-	if (ret == 0)
-		pthread_mutex_unlock(&param->death);
-	snooze(1000);
+	snooze(9000);
 	return (ret);
 }
 

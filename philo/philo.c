@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:05:58 by lferro            #+#    #+#             */
-/*   Updated: 2024/06/18 15:23:52 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/02 16:09:59 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,3 @@ int	main(int argc, char const **argv)
 	pthread_mutex_destroy(&params.fini);
 	return (0);
 }
-
-// int k;
-// k = 0;
-// while (k < params.nbr_philo)
-// 	printf("id: %d has eaten: %d\n", params.philos[k].id,
-//	params.philos[k++].times_eaten);
