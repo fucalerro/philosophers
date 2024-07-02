@@ -46,11 +46,6 @@ static int	print_death(t_params *param, int i)
 	return (0);
 }
 
-
-
-
-
-
 int	monitor_death(t_params *param)
 {
 	int	i;
