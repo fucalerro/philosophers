@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:05:58 by lferro            #+#    #+#             */
-/*   Updated: 2024/07/02 16:09:59 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/02 16:59:14 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,20 @@ void	init_philosophers(t_params *params)
 	}
 }
 
-void	init_params(int argc, char const **argv, t_params *params)
+int	init_params(int argc, char const **argv, t_params *params)
 {
 	if (argc < 5 || argc > 6)
 	{
 		printf("Error: wrong number of arguments\n");
-		exit(1);
+		return (1);
 	}
-	check_digit_params(argc, argv);
+	if (check_digit_params(argc, argv))
+		return (1);
 	params->someone_died = 0;
 	params->nbr_philo = ft_atoi(argv[1]);
 	if (params->nbr_philo < 1)
 	{
-		exit(1);
+		return (1);
 	}
 	params->time_to_die = ft_atoi(argv[2]);
 	params->time_to_eat = ft_atoi(argv[3]);
@@ -53,6 +54,7 @@ void	init_params(int argc, char const **argv, t_params *params)
 		params->meals_nbr = -1;
 	params->filled_philos = 0;
 	params->finished = 0;
+	return (0);
 }
 
 void	init_mutexes(t_params *params)
@@ -101,7 +103,8 @@ int	main(int argc, char const **argv)
 	int			i;
 
 	params.start_time = get_time();
-	init_params(argc, argv, &params);
+	if (init_params(argc, argv, &params))
+		return (1);
 	init_mutexes(&params);
 	init_philosophers(&params);
 	dinner(&params, &monitor);

@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:29:05 by lferro            #+#    #+#             */
-/*   Updated: 2024/07/02 16:13:16 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/02 16:59:36 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_params
 }					t_params;
 
 int					check_death(t_params *param);
-void				check_digit_params(int argc, char const **argv);
+int					check_digit_params(int argc, char const **argv);
 void				snooze(int microseconds);
 int					print_action(t_philo *philo, char *action,
 						long long start_time, int dead);

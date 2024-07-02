@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:35:43 by lferro            #+#    #+#             */
-/*   Updated: 2024/07/02 16:30:54 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/02 16:58:45 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	*monitor_routine(void *params)
 	return (0);
 }
 
-void	check_digit_params(int argc, char const **argv)
+int	check_digit_params(int argc, char const **argv)
 {
 	int	i;
 	int	j;
@@ -103,11 +103,12 @@ void	check_digit_params(int argc, char const **argv)
 			if (argv[i][j] < '0' || argv[i][j] > '9')
 			{
 				printf("Error: NaN\n");
-				exit(1);
+				return (1);
 			}
 			j++;
 		}
 		j = 0;
 		i++;
 	}
+	return (0);
 }
