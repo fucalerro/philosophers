@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:35:43 by lferro            #+#    #+#             */
-/*   Updated: 2024/07/02 16:10:01 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/02 16:30:54 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ static int	print_death(t_params *param, int i)
 	return (0);
 }
 
+
+
+
+
+
 int	monitor_death(t_params *param)
 {
 	int	i;
@@ -63,9 +68,11 @@ int	monitor_death(t_params *param)
 			param->someone_died++;
 			if (print_death(param, i) == 1)
 				ret = 1;
-			pthread_mutex_unlock(&param->death);
+			else
+				pthread_mutex_unlock(&param->death);
 		}
-		pthread_mutex_unlock(&param->philos[i].mealtime);
+		else
+			pthread_mutex_unlock(&param->philos[i].mealtime);
 		i++;
 	}
 	snooze(9000);
